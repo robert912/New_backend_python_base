@@ -5,8 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'echo Building...'
-                bat '"C:\\Python39\\python.exe" -m venv venv'
-C:\\Users\\Roberto\\AppData\\Local\\Programs\\Python\\Python312\\python.exe
+                bat '"C:/Users/Roberto/AppData/Local/Programs/Python/Python312/python.exe" -m venv venv'
                 bat 'venv\\Scripts\\activate.bat && pip install -r requirements.txt'
             }
         }
