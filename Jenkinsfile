@@ -1,17 +1,27 @@
 pipeline {
     agent any
-    environment {
-        COMPOSE_FILE = 'docker-compose.yml' // Nombre de tu archivo Docker Compose
-    }
+
     stages {
         stage('Build') {
             steps {
-                sh 'docker-compose build' // Construye las imágenes de los servicios
+                bat 'echo Building...'
+                bat 'python -m venv venv'
+                bat 'venv\\Scripts\\activate.bat && pip install -r requirements.txt'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'echo Testing...'
+                bat 'venv\\Scripts\\activate.bat && python -m pytest tests/'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker-compose up -d' // Ejecuta el backend y Redis en segundo plano
+                bat 'echo Deploying...'
+                // Aquí iría su lógica de despliegue
+                // Por ejemplo:
+                // bat 'docker build -t my-python-app .'
+                // bat 'docker run -d -p 5000:5000 my-python-app'
             }
         }
     }
