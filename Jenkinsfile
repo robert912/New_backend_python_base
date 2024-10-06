@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'echo Building...'
-                bat 'python -m venv venv'
+                bat '"C:\\Python39\\python.exe" -m venv venv'
                 bat 'venv\\Scripts\\activate.bat && pip install -r requirements.txt'
             }
         }
@@ -19,9 +19,6 @@ pipeline {
             steps {
                 bat 'echo Deploying...'
                 // Aquí iría su lógica de despliegue
-                // Por ejemplo:
-                // bat 'docker build -t my-python-app .'
-                // bat 'docker run -d -p 5000:5000 my-python-app'
             }
         }
     }
