@@ -1,6 +1,7 @@
 Flask==1.1.4
 Flask-Script
-Flask-Sqlalchemy
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.46
 Flask-Restful
 pymysql
 Flask-inputs
@@ -9,3 +10,4 @@ flask_cors
 openpyxl
 markupsafe==2.0.1
 python-dateutil
+WeasyPrint==52.5

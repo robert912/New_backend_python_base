@@ -1,6 +1,6 @@
 import sys, os
 from flask_restful import Resource, reqparse
-#from flask_jwt_extended import create_access_token
+
 from aplicacion.modelos.Usuario import Usuario
 from aplicacion.helpers.sesion import Sesion
 

@@ -14,6 +14,7 @@ from aplicacion.modelos import *
 from aplicacion.helpers.sesion import Sesion
 from aplicacion.recursos.login import Login
 from aplicacion.recursos.Persona import PersonaResource, PersonaIdentificacion
+from aplicacion.recursos.PdfGenerator import GeneratePdf
 
 app = Flask(__name__)
 CORS(app)
@@ -39,5 +40,6 @@ def verifica_token():
 api.add_resource(Login, '/login')
 api.add_resource(PersonaResource, '/getpersona')
 api.add_resource(PersonaIdentificacion, '/personabyrut')
+api.add_resource(GeneratePdf,'/generate_pdf')
 
 app.run(host='0.0.0.0', port=5000)
