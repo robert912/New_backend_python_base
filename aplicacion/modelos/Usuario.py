@@ -11,7 +11,7 @@ from aplicacion.helpers.utilidades import Utilidades
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
-    __table_args__ = {'schema': 'gestion_recursos'}
+    __table_args__ = {'schema': 'proyecto_devops'}
 
     id              = db.Column(db.Integer, primary_key=True)
     usuario         = db.Column(db.String(120), unique=True, nullable=False)
