@@ -1,7 +1,7 @@
 import sys, os, datetime
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from aplicacion.modelos.Persona import Persona
+from ..modelos.Persona import Persona
 
 class PersonaIdentificacion(Resource):
     def get(self):
@@ -95,7 +95,7 @@ class PersonaResource(Resource):
             person = Persona.update_data(data['id'], data)
             if not person:
                  return {'success': False, 'message': "Persona no encontrada.", 'data': []}, 200
-            return {'success': False, 'message': 'Persona actualizada exitosamente', 'data': person}, 200
+            return {'success': True, 'message': 'Persona actualizada exitosamente', 'data': person}, 200
         
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -112,7 +112,7 @@ class PersonaResource(Resource):
             person = Persona.delete_data(data['id'])
             if not person:
                  return {'success': False, 'message': "Persona no encontrada.", 'data': []}, 200
-            return {'success': False, 'message': 'Persona eliminada exitosamente', 'data': person}, 200
+            return {'success': True, 'message': 'Persona eliminada exitosamente', 'data': person}, 200
         
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
