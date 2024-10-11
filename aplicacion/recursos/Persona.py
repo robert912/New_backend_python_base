@@ -1,7 +1,7 @@
 import sys, os, datetime
 from flask import jsonify
 from flask_restful import Resource, reqparse
-from ..modelos.Persona import Persona
+from aplicacion.modelos.Persona import Persona
 
 class PersonaIdentificacion(Resource):
     def get(self):
