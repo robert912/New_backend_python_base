@@ -19,9 +19,6 @@ COPY . /app
 # Instalar las dependencias desde requirements.txt
 RUN pip install -r requirements.txt
 
-# Configurar PYTHONPATH
-ENV PYTHONPATH=/app
-
 # Exponer el puerto 5000
 EXPOSE 5000
 
