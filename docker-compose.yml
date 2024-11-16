@@ -13,5 +13,6 @@ services:
       - redis
     volumes:
       - .:/app
+    command: pytest tests/  # Sobrescribe el comando por defecto para ejecutar pruebas
   redis:
     image: redis
