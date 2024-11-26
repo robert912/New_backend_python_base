@@ -33,7 +33,7 @@ class Prueba(Resource):
 
 @app.before_request
 def verifica_token():
-    if request.method != 'OPTIONS' and request.endpoint != 'login':
+    if request.method != 'OPTIONS' and request.endpoint != 'login' and request.endpoint != 'prueba':
         if not request.headers.get('Authorization'):
             return jsonify({'message': 'Acceso denegado'}), 403
         else:
