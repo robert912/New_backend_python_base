@@ -4,7 +4,7 @@ import sys,os,click,json
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_restful import Api
+from flask_restful import Api, Resource
 from aplicacion.config import app_config
 from aplicacion.enviroment import env
 from aplicacion.db import db
@@ -26,6 +26,11 @@ db.init_app(app)
 redis.init_app(app)
 api = Api(app)
 
+class Prueba(Resource):
+    def get(self):
+        return {'message': 'La API está funcionando correctamente'}, 200
+
+
 @app.before_request
 def verifica_token():
     if request.method != 'OPTIONS' and request.endpoint != 'login':
@@ -36,7 +41,7 @@ def verifica_token():
             if es_valido == False:
                 return jsonify({'message' :'Acceso denegado'}),403
 
-
+api.add_resource(Prueba, '/prueba')
 api.add_resource(Login, '/login')
 api.add_resource(PersonaResource, '/getpersona')
 api.add_resource(PersonaIdentificacion, '/personabyrut')
