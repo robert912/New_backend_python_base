@@ -41,20 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('Test: Prueba de API') {
-            steps {
-                script {
-                    def response = bat(script: 'curl -s -o response.txt -w "%%{http_code}" http://localhost:5000/prueba', returnStdout: true).trim()
-                    def statusCode = response.tokenize().last()
-                    if (statusCode == "200") {
-                        echo "La prueba de API fue exitosa. Código de estado: ${statusCode}"
-                    } else {
-                        error "La prueba de API falló. Código de estado: ${statusCode}"
-                    }
-                }
-            }
-        }
-        stage('Test: Ejecutar pruebas unitarias') {
+        stage('Test: Prueba de API y pruebas unitarias') {
             steps {
                 script {
                     dir("${WORKSPACE}\\New_backend_python_base") {

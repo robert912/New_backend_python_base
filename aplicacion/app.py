@@ -11,10 +11,12 @@ from aplicacion.db import db
 from aplicacion.redis import redis
 from aplicacion.modelos import *
 
+from tests.app_tests import Prueba
 from aplicacion.helpers.sesion import Sesion
 from aplicacion.recursos.login import Login
 from aplicacion.recursos.Persona import PersonaResource, PersonaIdentificacion
 from aplicacion.recursos.PdfGenerator import GeneratePdf
+
 
 app = Flask(__name__)
 CORS(app)
@@ -25,10 +27,6 @@ app.config.from_object(app_config[enviroment])
 db.init_app(app)
 redis.init_app(app)
 api = Api(app)
-
-class Prueba(Resource):
-    def get(self):
-        return {'message': 'La API está funcionando correctamente'}, 200
 
 
 @app.before_request

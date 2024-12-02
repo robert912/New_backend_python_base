@@ -1,3 +1,9 @@
+from flask_restful import Resource
+
+class Prueba(Resource):
+    def get(self):
+        return {'message': 'La API está funcionando correctamente'}, 200
+
 class Calculator:
     def add(self, a, b):
         return a + b
