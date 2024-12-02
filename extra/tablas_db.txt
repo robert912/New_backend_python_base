@@ -9,12 +9,13 @@ CREATE TABLE `persona` (
   PRIMARY KEY (`id`),
   KEY `identificacion` (`identificacion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
 #'1', '12345678-9', 'Juanito', 'Pérez', '2024-10-04 11:53:05', '2024-10-05 14:36:01'
 #'2', '98765432-1', 'María', 'González', '2024-10-04 11:53:05', '2024-10-04 11:53:05'
 #'3', '11223344-5', 'Pedro', 'Rodríguez', '2024-10-04 11:53:05', '2024-10-04 11:53:05'
 #'4', '55667788-9', 'Ana', 'Martínez', '2024-10-04 11:53:05', '2024-10-04 11:53:05'
 #'5', '99887766-5', 'Carlos', 'Sánchez', '2024-10-04 11:53:05', '2024-10-04 11:53:05'
-#'8', '17411947-8', 'Robertito', 'Orellana', '2024-10-05 14:58:31', '2024-10-05 15:36:50'
+#'6', '17411947-8', 'Roberto', 'Orellana', '2024-10-05 14:58:31', '2024-10-05 15:36:50'
 
 
 #Tabla Usuario
@@ -28,4 +29,6 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `email` (`usuario`),
   KEY `email_2` (`usuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-#'1', '12345678-9', '92946502b2901f6937dd916dd586ed1585705e38f8269db40249845c4d3bb534', '2024-10-04 12:08:55', '2024-10-04 15:19:55'
+
+#'1', '12345678-9', '92946502b2901f6937dd916dd586ed1585705e38f8269db40249845c4d3bb534', '2024-10-04 12:08:55', '2024-10-04 15:19:55' #
+#SELECT SHA2(AES_ENCRYPT('12345678','40ba08ea0c8f66bde25f92f56f7c4fa6'), 256) AS hash FROM dual LIMIT 1;

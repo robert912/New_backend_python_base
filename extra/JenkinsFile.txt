@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    stages {
+        stage('Limpiar Workspace') {
+            steps {
+                cleanWs() // Limpia el workspace antes de cualquier otra acción
+            }
+        }
+        stage('Clonar código') {
+            steps {
+                // Clona el repositorio
+                bat 'git clone https://github.com/robert912/New_backend_python_base.git'
+            }
+        }
+        stage('Construir y levantar servicios') {
+            steps {
+                script {
+                    dir("${WORKSPACE}\\New_backend_python_base") { // ruta relativa o absoluta donde está docker-compose.yml
+                        bat 'docker-compose up --build -d'
+                    }
+                }
+            }
+        }
+        stage('Esperar antes de prueba de API') {
+            steps {
+                script {
+                    echo 'Esperando 2 segundos para que los servicios estén listos...'
+                    sleep(time: 2, unit: 'SECONDS') // Agrega el retraso de 2 segundos para realizar las pruebas
+                }
+            }
+        }
+        stage('Prueba de API') {
+            steps {
+                script {
+                    def response = bat(script: 'curl -s -o response.txt -w "%%{http_code}" http://localhost:5000/prueba', returnStdout: true).trim()
+                    def statusCode = response.tokenize().last()
+                    if (statusCode == "200") {
+                        echo "La prueba de API fue exitosa. Código de estado: ${statusCode}"
+                    } else {
+                        error "La prueba de API falló. Código de estado: ${statusCode}"
+                    }
+                }
+            }
+        }
+        /*stage('Apagar servicios') {
+            steps {
+                dir("${WORKSPACE}\\New_backend_python_base") {
+                    // Detener y eliminar servicios
+                    bat 'docker-compose down'
+                }
+            }
+        }*/
+    }
+    post {
+        always {
+            /*dir("${WORKSPACE}\\New_backend_python_base") {
+                // Limpieza de volúmenes si es necesario
+                bat 'docker-compose down -v'
+            }*/
+            echo 'Pipeline completado.'
+        }
+    }
+}
