@@ -12,10 +12,22 @@ pipeline {
                 bat 'git clone https://github.com/robert912/New_backend_python_base.git'
             }
         }
-        stage('Construir y levantar servicios') {
+        stage('Configurar entorno de producción') {
             steps {
                 script {
-                    dir("${WORKSPACE}\\New_backend_python_base") { // ruta relativa o absoluta donde está docker-compose.yml
+                    dir("${WORKSPACE}\\New_backend_python_base") {
+                        // Modificar el archivo enviroment.py para usar 'production'
+                        bat '''
+                            echo env = 'production' > aplicacion/enviroment.py
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Build: Construir y levantar servicios') {
+            steps {
+                script {
+                    dir("${WORKSPACE}\\New_backend_python_base") {
                         bat 'docker-compose up --build -d'
                     }
                 }
@@ -29,7 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('Prueba de API') {
+        stage('Test: Prueba de API') {
             steps {
                 script {
                     def response = bat(script: 'curl -s -o response.txt -w "%%{http_code}" http://localhost:5000/prueba', returnStdout: true).trim()
@@ -38,6 +50,15 @@ pipeline {
                         echo "La prueba de API fue exitosa. Código de estado: ${statusCode}"
                     } else {
                         error "La prueba de API falló. Código de estado: ${statusCode}"
+                    }
+                }
+            }
+        }
+        stage('Test: Ejecutar pruebas unitarias') {
+            steps {
+                script {
+                    dir("${WORKSPACE}\\New_backend_python_base") {
+                        bat 'docker-compose exec backend pytest tests/'
                     }
                 }
             }

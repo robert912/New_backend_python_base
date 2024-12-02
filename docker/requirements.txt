@@ -11,3 +11,5 @@ openpyxl
 markupsafe==2.0.1
 python-dateutil
 WeasyPrint==52.5
+requests
+pytest
