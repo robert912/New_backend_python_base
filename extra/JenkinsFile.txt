@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
                     dir("${WORKSPACE}\\New_backend_python_base") {
-                        bat 'docker-compose exec backend pytest tests/'
+                        bat 'docker-compose exec backend pytest -v tests/'
                     }
                 }
             }
