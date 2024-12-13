@@ -8,7 +8,7 @@ class Persona(db.Model):
     __tablename__ = 'persona'
     __table_args__ = (
         db.Index('identificacion'),
-        {'schema': 'lista_gastos'}
+        {'schema': 'proyecto_devops'}
     )
 
     id = db.Column(db.Integer, primary_key=True)
