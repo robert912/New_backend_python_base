@@ -19,7 +19,7 @@ class Login(Resource):
             if user and 'password_hash' in user[0] and user[0]['password_hash'] == passw:
                 tokenId = Sesion.generar_tokenid(user[0]['usuario'], user[0]['password_hash'], 'Admin')
                 return {'success': True, 'message': 'Bienvenido', "access_token": tokenId}, 200
-            return {'success': False, 'message': 'Usuario o contraseña incorrectos', 'data': None}, 401
+            return {'success': False, 'message': 'Usuario o contraseña incorrectos', 'data': None}, 200
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -43,26 +43,15 @@ class Login(Resource):
 
 class LogoutResource(Resource):
     def post(self):
-        """
-            @apiDescription elimina la session asociada al token
-        """
-
+        """@apiDescription elimina la session asociada al token"""
         parser = reqparse.RequestParser()
-
-        parser.add_argument('token',
-            type=str,
-            required=True,
-            location="headers",
-            help="Debe indicar token"
-        )
-
+        parser.add_argument('token', type=str, required=True, location="headers", help="Debe indicar token")
         headers = parser.parse_args()
         try:
             dataLogin = {'url':'login.html'}
             tokenId = headers["token"]
             if (redis.exists(tokenId)):
-                delRedis = redis.delete(tokenId)
-                #FIN DE CONTROL DE USUARIOS
+                delRedis = redis.delete(tokenId)#FIN DE CONTROL DE USUARIOS
                 if delRedis:
                     return {'success': True, 'message': 'Acción realizada con exito', 'data':dataLogin }, 200
                 else:
