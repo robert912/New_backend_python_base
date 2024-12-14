@@ -13,7 +13,7 @@ from aplicacion.modelos import *
 
 from tests.app_tests import Prueba
 from aplicacion.helpers.sesion import Sesion
-from aplicacion.recursos.login import Login
+from aplicacion.recursos.login import Login, LogoutResource
 from aplicacion.recursos.Persona import PersonaResource, PersonaIdentificacion
 from aplicacion.recursos.PdfGenerator import GeneratePdf
 
@@ -40,7 +40,8 @@ def verifica_token():
                 return jsonify({'message' :'Acceso denegado'}),403
 
 api.add_resource(Prueba, '/prueba')
-api.add_resource(Login, '/login')
+api.add_resource(Login, '/login', '/login/validar')
+api.add_resource(LogoutResource, '/logout/system')
 api.add_resource(PersonaResource, '/getpersona')
 api.add_resource(PersonaIdentificacion, '/personabyrut')
 api.add_resource(GeneratePdf,'/generate_pdf')

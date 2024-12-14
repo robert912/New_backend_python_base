@@ -1,6 +1,8 @@
 import sys, os
 from flask_restful import Resource, reqparse
+from flask import request
 
+from aplicacion.redis import redis
 from aplicacion.modelos.Usuario import Usuario
 from aplicacion.helpers.sesion import Sesion
 
@@ -16,10 +18,60 @@ class Login(Resource):
             passw = Usuario.getHash(data['password'])
             if user and 'password_hash' in user[0] and user[0]['password_hash'] == passw:
                 tokenId = Sesion.generar_tokenid(user[0]['usuario'], user[0]['password_hash'], 'Admin')
-                return {"access_token": tokenId}, 200
-            return {"message": "usuario o contraseña incorrectos"}, 401
+                return {'success': True, 'message': 'Bienvenido', "access_token": tokenId}, 200
+            return {'success': False, 'message': 'Usuario o contraseña incorrectos', 'data': None}, 401
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             msj = 'Error: '+ str(exc_obj) + ' File: ' + fname +' linea: '+ str(exc_tb.tb_lineno)
-            return {'mensaje': str(msj) }, 500
+            return {'mensaje': str(msj) }, 500  
+
+    def get(self):
+        try:
+            if request.headers.get('token'):
+                dataRedis = Sesion.validar_token(request.headers.get('token'))
+                if dataRedis['es_valido'] == False:
+                    return {'success' : False, 'message' :'Acceso denegado'}, 500
+                else:
+                    return {'success' : True, "data":dataRedis['data']}, 200
+            else:
+                return {'success' : False, 'message' :'Acceso denegado'}, 500
+
+        except Exception as e:
+            return {"message": "Ha ocurrido un error de token."}, 500
+
+
+class LogoutResource(Resource):
+    def post(self):
+        """
+            @apiDescription elimina la session asociada al token
+        """
+
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('token',
+            type=str,
+            required=True,
+            location="headers",
+            help="Debe indicar token"
+        )
+
+        headers = parser.parse_args()
+        try:
+            dataLogin = {'url':'login.html'}
+            tokenId = headers["token"]
+            if (redis.exists(tokenId)):
+                delRedis = redis.delete(tokenId)
+                #FIN DE CONTROL DE USUARIOS
+                if delRedis:
+                    return {'success': True, 'message': 'Acción realizada con exito', 'data':dataLogin }, 200
+                else:
+                    return {'success': False, 'message': 'Ha ocurrido un error inesperado.', 'data':dataLogin }, 200
+            else:
+                    return {'success': False, 'message': 'Ha ocurrido un error inesperado.', 'data':dataLogin }, 200
+            
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            msj = "Error: "+ str(exc_obj) + " File: " + fname +" linea: "+ str(exc_tb.tb_lineno)
+            return {"estado":0,"mensaje": "Ha ocurrido un error inesperado", "error":msj}, 500
